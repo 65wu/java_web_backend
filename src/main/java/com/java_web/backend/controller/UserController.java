@@ -2,8 +2,8 @@ package com.java_web.backend.controller;
 
 import com.java_web.backend.dao.UserRepository;
 import com.java_web.backend.model.User;
+import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -14,11 +14,11 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<User> Register(@RequestBody User newUser) {
+    public MyResponse Register(@RequestBody User newUser) {
         Date create_date = new Date();
         newUser.setCreated_at(create_date);
         newUser.setStatus(0);
         userRepository.save(newUser);
-        return ResponseEntity.accepted().body(newUser);
+        return MyResponse.success(newUser);
     }
 }
