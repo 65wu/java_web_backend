@@ -17,6 +17,7 @@ public class UserController {
     public ResponseEntity<User> Register(@RequestBody User newUser) {
         Date create_date = new Date();
         newUser.setCreated_at(create_date);
+        newUser.setStatus(0);
         userRepository.save(newUser);
         return ResponseEntity.accepted().body(newUser);
     }
