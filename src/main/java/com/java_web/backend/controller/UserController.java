@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 public class UserController {
     @Autowired
@@ -13,6 +15,8 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> Register(@RequestBody User newUser) {
+        Date create_date = new Date();
+        newUser.setCreated_at(create_date);
         userRepository.save(newUser);
         return ResponseEntity.accepted().body(newUser);
     }
