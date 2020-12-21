@@ -8,7 +8,7 @@ public enum ResultCode {
     FAIL_DELETE(4, "Delete failed");
 
     private final Integer code;
-    private final String message;
+    private String message;
 
     ResultCode(Integer code, String message) {
         this.code = code;
@@ -21,5 +21,9 @@ public enum ResultCode {
 
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
