@@ -11,13 +11,17 @@ public class UserController {
     @Autowired
     private UserRegisterService userRegisterService;
     @PostMapping("/register")
-    public MyResponse Register(
-            @RequestBody User newUser
-    ) {
+    public MyResponse Register(@RequestBody User newUser) {
         return MyResponse.success(userRegisterService.Register(
                 newUser.getPassword(),
                 newUser.getName(),
                 newUser.getEmail())
         );
+    }
+    @PostMapping("/login")
+    public MyResponse Login(@RequestBody User newUser) {
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        passwordEncoder.matches(newUser.getPassword(), encodedPassword);
+        return MyResponse.success();
     }
 }

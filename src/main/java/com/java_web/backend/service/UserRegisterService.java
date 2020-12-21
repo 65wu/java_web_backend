@@ -3,6 +3,7 @@ package com.java_web.backend.service;
 import com.java_web.backend.dao.UserRepository;
 import com.java_web.backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,13 +19,16 @@ public class UserRegisterService {
     ) {
         User user = new User();
         Date date = new Date();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password.trim());
 
-        user.setPassword(password);
+        user.setPassword(encodedPassword);
         user.setName(name);
         user.setEmail(email);
         user.setCreated_at(date);
         user.setUpdated_at(date);
         user.setStatus(0);
+
         userRepository.save(user);
         return user;
     }
