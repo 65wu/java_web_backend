@@ -1,7 +1,7 @@
 package com.java_web.backend.controller;
 
 import com.java_web.backend.model.User;
-import com.java_web.backend.service.UserRegisterService;
+import com.java_web.backend.service.UserService;
 import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,19 +9,20 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
     @Autowired
-    private UserRegisterService userRegisterService;
+    private UserService userService;
     @PostMapping("/register")
     public MyResponse Register(@RequestBody User newUser) {
-        return MyResponse.success(userRegisterService.Register(
+        return userService.Register(
                 newUser.getPassword(),
                 newUser.getName(),
-                newUser.getEmail())
+                newUser.getEmail()
         );
     }
     @PostMapping("/login")
-    public MyResponse Login(@RequestBody User newUser) {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        passwordEncoder.matches(newUser.getPassword(), encodedPassword);
-        return MyResponse.success();
+    public MyResponse Login(@RequestBody User user) {
+        return userService.Login(
+                user.getUsername(),
+                user.getPassword()
+        );
     }
 }
