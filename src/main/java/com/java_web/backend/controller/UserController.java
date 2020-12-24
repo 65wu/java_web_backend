@@ -6,12 +6,14 @@ import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public MyResponse Register(@RequestBody User newUser) {
+    public MyResponse Register(@RequestBody @Valid User newUser) {
         return userService.Register(
                 newUser.getPassword(),
                 newUser.getName(),
