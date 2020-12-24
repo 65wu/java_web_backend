@@ -13,7 +13,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public MyResponse Register(@RequestBody @Valid User newUser) {
+    public MyResponse Register(@RequestBody User newUser) {
         return userService.Register(
                 newUser.getPassword(),
                 newUser.getName(),

@@ -14,15 +14,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull(message = "用户ID不能为空")
-    private Integer username;
-    private String password;
-    private String name;
-    private String email;
-    private Integer status;
+    protected Integer username;
+    protected String password;
+    protected String name;
+    protected String email;
+    protected Integer status;
     @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date created_at;
+    protected Date created_at;
     @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date updated_at;
+    protected Date updated_at;
 
     public Date getCreated_at() {
         return created_at;
