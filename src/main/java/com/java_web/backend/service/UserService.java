@@ -1,7 +1,7 @@
 package com.java_web.backend.service;
 
 import com.java_web.backend.dao.UserRepository;
-import com.java_web.backend.model.User;
+import com.java_web.backend.model.po.User;
 import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

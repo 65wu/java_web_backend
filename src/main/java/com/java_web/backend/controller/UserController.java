@@ -1,7 +1,7 @@
 package com.java_web.backend.controller;
 
-import com.java_web.backend.model.User;
-import com.java_web.backend.model.UserRegisterEvent;
+import com.java_web.backend.model.po.User;
+import com.java_web.backend.model.dto.UserRegisterTransfer;
 import com.java_web.backend.service.UserService;
 import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public MyResponse Register(@RequestBody @Valid UserRegisterEvent user) {
+    public MyResponse Register(@RequestBody @Valid UserRegisterTransfer urt) {
         return userService.Register(
-                user.getPassword(),
-                user.getName(),
-                user.getEmail()
+                urt.getPassword(),
+                urt.getName(),
+                urt.getEmail()
         );
     }
     @PostMapping("/login")

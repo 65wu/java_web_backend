@@ -1,4 +1,4 @@
-package com.java_web.backend.model;
+package com.java_web.backend.model.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
