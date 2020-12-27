@@ -1,6 +1,6 @@
 package com.java_web.backend.controller;
 
-import com.java_web.backend.model.po.User;
+import com.java_web.backend.model.dto.UserLoginTransfer;
 import com.java_web.backend.model.dto.UserRegisterTransfer;
 import com.java_web.backend.service.UserService;
 import com.java_web.backend.util.MyResponse;
@@ -22,7 +22,7 @@ public class UserController {
         );
     }
     @PostMapping("/login")
-    public MyResponse Login(@RequestBody User user) {
+    public MyResponse Login(@RequestBody @Valid UserLoginTransfer user) {
         return userService.Login(
                 user.getUsername(),
                 user.getPassword()
