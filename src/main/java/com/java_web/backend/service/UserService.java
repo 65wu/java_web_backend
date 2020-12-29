@@ -1,5 +1,6 @@
 package com.java_web.backend.service;
 
+import com.java_web.backend.dao.UserManager;
 import com.java_web.backend.dao.UserRepository;
 import com.java_web.backend.model.po.User;
 import com.java_web.backend.util.MyResponse;
@@ -14,6 +15,9 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserManager userManager;
+
     public MyResponse Register(
             String password,
             String name,
@@ -61,5 +65,22 @@ public class UserService {
                 0,
                 "用户名不存在"
         );
+    }
+    public MyResponse EditPassword(Integer username, String rawPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(rawPassword.trim());
+        try {
+            userManager.updateUserPassword(encodedPassword, username);
+            return new MyResponse(
+                    1,
+                    "密码修改成功"
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new MyResponse(
+                    0,
+                    "密码修改成功"
+            );
+        }
     }
 }
