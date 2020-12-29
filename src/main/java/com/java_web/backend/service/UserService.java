@@ -79,7 +79,22 @@ public class UserService {
             e.printStackTrace();
             return new MyResponse(
                     0,
-                    "密码修改成功"
+                    "密码修改失败"
+            );
+        }
+    }
+    public MyResponse EditBasic(Integer username, String name, String email) {
+        try {
+            userManager.updateUserBasic(name, email, username);
+            return new MyResponse(
+                    1,
+                    "基本信息修改成功"
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new MyResponse(
+                    0,
+                    "基本信息修改失败"
             );
         }
     }

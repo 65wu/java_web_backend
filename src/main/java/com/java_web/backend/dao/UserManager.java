@@ -11,4 +11,10 @@ public interface UserManager {
             @Param("password") String password,
             @Param("username") Integer username
     );
+    @Update("update user set name=#{name}, email=#{email} where username=#{username}")
+    void updateUserBasic(
+            @Param("password") String name,
+            @Param("password") String email,
+            @Param("username") Integer username
+    );
 }

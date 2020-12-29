@@ -1,5 +1,6 @@
 package com.java_web.backend.controller;
 
+import com.java_web.backend.model.dto.UserEditBasicTransfer;
 import com.java_web.backend.model.dto.UserEditPasswordTransfer;
 import com.java_web.backend.model.dto.UserLoginTransfer;
 import com.java_web.backend.model.dto.UserRegisterTransfer;
@@ -34,6 +35,14 @@ public class UserController {
         return userService.EditPassword(
                 user.getUsername(),
                 user.getPassword()
+        );
+    }
+    @PutMapping("/edit/basic")
+    public MyResponse EditBasic(@RequestBody @Valid UserEditBasicTransfer user) {
+        return userService.EditBasic(
+                user.getUsername(),
+                user.getName(),
+                user.getEmail()
         );
     }
 }
