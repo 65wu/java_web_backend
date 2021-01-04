@@ -10,12 +10,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@CrossOrigin(origins = "*")
 public class UserService {
     @Autowired
     private UserRepository userRepository;
