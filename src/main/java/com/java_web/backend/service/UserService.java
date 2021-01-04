@@ -5,6 +5,7 @@ import com.java_web.backend.dao.UserRepository;
 import com.java_web.backend.model.po.User;
 import com.java_web.backend.util.Md5TokenGenerator;
 import com.java_web.backend.util.MyResponse;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class UserService {
     ) {
         User user = new User();
         Date date = new Date();
+        JSONObject result = new JSONObject();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password.trim());
 
@@ -39,10 +41,11 @@ public class UserService {
         user.setStatus(0);
 
         userRepository.save(user);
+        result.put("user", user);
         return new MyResponse(
                 1,
                 "注册成功",
-                user
+                result
         );
     }
 
