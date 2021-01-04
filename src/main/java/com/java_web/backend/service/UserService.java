@@ -27,6 +27,14 @@ public class UserService {
             String name,
             String email
     ) {
+        Integer id = userManager.findIdByName(name);
+        if(id != null) {
+            return new MyResponse(
+                    1,
+                    "用户名被占用，注册失败"
+            );
+        }
+
         User user = new User();
         Date date = new Date();
         JSONObject result = new JSONObject();
