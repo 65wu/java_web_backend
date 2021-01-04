@@ -2,10 +2,7 @@ package com.java_web.backend.model.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -16,6 +13,7 @@ public class User {
     @NotNull(message = "用户ID不能为空")
     protected Integer username;
     protected String password;
+    @Column(unique=true)
     protected String name;
     protected String email;
     protected Integer status;

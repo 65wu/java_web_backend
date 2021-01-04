@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping("/login")
     public MyResponse Login(@RequestBody @Valid UserLoginTransfer user) {
         return userService.Login(
-                user.getUsername(),
+                user.getName(),
                 user.getPassword()
         );
     }

@@ -45,14 +45,15 @@ public class UserService {
         return new MyResponse(
                 1,
                 "注册成功",
-                result
+                user
         );
     }
 
     public MyResponse Login(
-            Integer id,
+            String name,
             String rawPassword
     ) {
+        Integer id = userManager.findIdByName(name);
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();

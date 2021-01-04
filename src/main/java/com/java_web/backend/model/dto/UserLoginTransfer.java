@@ -4,12 +4,12 @@ import javax.validation.constraints.NotNull;
 
 public class UserLoginTransfer {
     @NotNull
-    private Integer username;
+    private String name;
     @NotNull
     private String password;
 
-    public Integer getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public String getPassword() {
