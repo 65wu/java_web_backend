@@ -6,11 +6,14 @@ import com.java_web.backend.model.po.User;
 import com.java_web.backend.util.Md5TokenGenerator;
 import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserService {
@@ -20,6 +23,8 @@ public class UserService {
     private UserManager userManager;
     @Autowired
     private Md5TokenGenerator tokenGenerator;
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
 
     public MyResponse Register(
             String password,
@@ -38,6 +43,11 @@ public class UserService {
         Date date = new Date();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password.trim());
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        String token = tokenGenerator.generate(name, password);
+        valueStr.set(name, token, 20, TimeUnit.SECONDS);
+        valueStr.set(token, name, 20, TimeUnit.SECONDS);
+        valueStr.set(token + name, date.toString(), 20, TimeUnit.SECONDS);
 
         user.setPassword(encodedPassword);
         user.setName(name);
