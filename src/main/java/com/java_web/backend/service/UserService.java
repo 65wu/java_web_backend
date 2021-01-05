@@ -50,13 +50,6 @@ public class UserService {
         // 密码加密
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password.trim());
-        // redis token初始化
-        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
-        String token = tokenGenerator.generate(name, password);
-        valueStr.set(name, token, 10, TimeUnit.MINUTES);
-        valueStr.set(token, name, 10, TimeUnit.MINUTES);
-        long birthTime = System.currentTimeMillis();
-        valueStr.set(token + name, birthTime + "", 10, TimeUnit.MINUTES);
         //写入数据库
         user.setPassword(encodedPassword);
         user.setName(name);
@@ -66,13 +59,9 @@ public class UserService {
         user.setStatus(0);
 
         userRepository.save(user);
-        Map<String, Object> result = new HashMap<>();
-        result.put("user", user);
-        result.put("token", token);
         return new MyResponse(
                 1,
-                "注册成功",
-                result
+                "注册成功"
         );
     }
 
@@ -82,14 +71,52 @@ public class UserService {
     ) {
         Integer id = userManager.findIdByName(name);
         Optional<User> optionalUser = userRepository.findById(id);
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+
         if(optionalUser.isPresent()) {
+            // 准备比对密码
             User user = optionalUser.get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if(passwordEncoder.matches(rawPassword, user.getPassword()))
+            String password = user.getPassword();
+
+            if(passwordEncoder.matches(rawPassword, password)) {
+                // 先查看token是否存在
+                String token = valueStr.get(name);
+                if(token != null) {
+                    String tokenBirthRaw = valueStr.get(token + name);
+                    if(tokenBirthRaw != null) {
+                        // 取出token注册时的时间戳
+                        long tokeBirthTime = Long.parseLong(tokenBirthRaw);
+                        // 若token寿命过半则更新
+                        if (System.currentTimeMillis() - tokeBirthTime > 3e5) {
+                            redisTemplate.expire(name, 10, TimeUnit.MINUTES);
+                            redisTemplate.expire(token, 10, TimeUnit.MINUTES);
+                            long newBirthTime = System.currentTimeMillis();
+                            valueStr.set(token + name, Long.toString(newBirthTime));
+                        }
+                        Map<String, Object> result = new HashMap<>();
+                        result.put("token", token);
+                        return new MyResponse(
+                                1,
+                                "登录成功",
+                                result
+                        );
+                    }
+                }
+                // redis token初始化或重新注册
+                token = tokenGenerator.generate(name, password);
+                valueStr.set(name, token, 10, TimeUnit.MINUTES);
+                valueStr.set(token, name, 10, TimeUnit.MINUTES);
+                long birthTime = System.currentTimeMillis();
+                valueStr.set(token + name, birthTime + "", 10, TimeUnit.MINUTES);
+                Map<String, Object> result = new HashMap<>();
+                result.put("token", token);
                 return new MyResponse(
                         1,
-                        "登录成功"
+                        "登录成功",
+                        result
                 );
+            }
             else
                 return new MyResponse(
                         0,

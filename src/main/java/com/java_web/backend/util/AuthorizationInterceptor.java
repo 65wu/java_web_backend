@@ -41,7 +41,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
                     String tokenBirthRaw = valueStr.get(token + name);
                     if (tokenBirthRaw != null) {
                         long tokeBirthTime = Long.parseLong(tokenBirthRaw);
-                        System.out.println("token birth time: " + tokeBirthTime);
                         // 如果token失效已经超过3e5ms，即300s, 5min，对token进行续期
                         if (System.currentTimeMillis() - tokeBirthTime > 3e5) {
                             redisTemplate.expire(name, 10, TimeUnit.MINUTES);
