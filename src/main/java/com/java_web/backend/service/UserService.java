@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -59,10 +61,13 @@ public class UserService {
         user.setStatus(0);
 
         userRepository.save(user);
+        Map<String, Object> result = new HashMap<>();
+        result.put("user", user);
+        result.put("token", token);
         return new MyResponse(
                 1,
                 "注册成功",
-                user
+                result
         );
     }
 
