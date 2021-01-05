@@ -1,4 +1,4 @@
-package com.java_web.backend.util;
+package com.java_web.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

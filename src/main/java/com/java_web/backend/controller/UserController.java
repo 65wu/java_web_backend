@@ -5,6 +5,7 @@ import com.java_web.backend.model.dto.UserEditPasswordTransfer;
 import com.java_web.backend.model.dto.UserLoginTransfer;
 import com.java_web.backend.model.dto.UserRegisterTransfer;
 import com.java_web.backend.service.UserService;
+import com.java_web.backend.util.AuthToken;
 import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class UserController {
                 urt.getEmail()
         );
     }
+    @AuthToken
     @PostMapping("/login")
     public MyResponse Login(@RequestBody @Valid UserLoginTransfer user) {
         return userService.Login(
