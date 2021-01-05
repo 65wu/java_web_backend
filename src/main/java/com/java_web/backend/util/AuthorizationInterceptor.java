@@ -15,12 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class AuthorizationInterceptor implements HandlerInterceptor {
-
-    public static final String REQUEST_CURRENT_KEY = "REQUEST_CURRENT_KEY";
     @Autowired
     RedisTemplate<String, String> redisTemplate;
 
@@ -33,52 +30,51 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         Method method = handlerMethod.getMethod();
 
         if (method.getAnnotation(AuthToken.class) != null || handlerMethod.getBeanType().getAnnotation(AuthToken.class) != null) {
-//            String httpHeaderName = "Authorization";
+            // 获取请求头中的token值
             String httpHeaderName = "Token";
             String token = request.getHeader(httpHeaderName);
-            System.out.println("token: " + token);
+            // 用token查找name
             ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
-            String name = "";
             if (token != null && token.length() != 0) {
-                name = valueStr.get(token);
-            }
-            System.out.println("name: " + name);
-            if (name != null && !name.trim().equals("")) {
-                long tokeBirthTime = Long.parseLong(Objects.requireNonNull(valueStr.get(token + name)));
-                long diff = System.currentTimeMillis() - tokeBirthTime;
-                if (diff > 3e8) {
-                    redisTemplate.expire(name, 10, TimeUnit.MINUTES);
-                    redisTemplate.expire(token, 10, TimeUnit.MINUTES);
-                    long newBirthTime = System.currentTimeMillis();
-                    valueStr.set(token + name, Long.toString(newBirthTime));
-                }
-                request.setAttribute(REQUEST_CURRENT_KEY, name);
-                return true;
-            } else {
-                ObjectMapper mapper = new ObjectMapper();
-                ObjectNode node = mapper.createObjectNode();
-                PrintWriter out = null;
-                try {
-                    int unauthorizedErrorCode = HttpServletResponse.SC_UNAUTHORIZED;
-                    response.setStatus(unauthorizedErrorCode);
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-                    node.put("code", ((HttpServletResponse) response).getStatus());
-                    node.put("message", String.valueOf(HttpStatus.UNAUTHORIZED));
-                    out = response.getWriter();
-                    out.println(node);
-                    return false;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (null != out) {
-                        out.flush();
-                        out.close();
+                String name = valueStr.get(token);
+                if (name != null) {
+                    String tokenBirthRaw = valueStr.get(token + name);
+                    if (tokenBirthRaw != null) {
+                        long tokeBirthTime = Long.parseLong(tokenBirthRaw);
+                        System.out.println("token birth time: " + tokeBirthTime);
+                        // 如果token失效已经超过3e5ms，即300s, 5min，对token进行续期
+                        if (System.currentTimeMillis() - tokeBirthTime > 3e5) {
+                            redisTemplate.expire(name, 10, TimeUnit.MINUTES);
+                            redisTemplate.expire(token, 10, TimeUnit.MINUTES);
+                            long newBirthTime = System.currentTimeMillis();
+                            valueStr.set(token + name, Long.toString(newBirthTime));
+                        }
+                        return true;
                     }
                 }
             }
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode node = mapper.createObjectNode();
+            PrintWriter out = null;
+            try {
+                int unauthorizedErrorCode = HttpServletResponse.SC_UNAUTHORIZED;
+                response.setStatus(unauthorizedErrorCode);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+                node.put("code", ((HttpServletResponse) response).getStatus());
+                node.put("message", String.valueOf(HttpStatus.UNAUTHORIZED));
+                out = response.getWriter();
+                out.println(node);
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (null != out) {
+                    out.flush();
+                    out.close();
+                }
+            }
         }
-        request.setAttribute(REQUEST_CURRENT_KEY, null);
         return true;
     }
 

@@ -43,16 +43,21 @@ public class UserService {
             );
         }
 
+        // user类初始化
         User user = new User();
+        // 时间初始化
         Date date = new Date();
+        // 密码加密
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password.trim());
+        // redis token初始化
         ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
         String token = tokenGenerator.generate(name, password);
         valueStr.set(name, token, 10, TimeUnit.MINUTES);
         valueStr.set(token, name, 10, TimeUnit.MINUTES);
-        valueStr.set(token + name, date.toString(), 10, TimeUnit.MINUTES);
-
+        long birthTime = System.currentTimeMillis();
+        valueStr.set(token + name, birthTime + "", 10, TimeUnit.MINUTES);
+        //写入数据库
         user.setPassword(encodedPassword);
         user.setName(name);
         user.setEmail(email);
