@@ -49,8 +49,8 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(password.trim());
         ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
         String token = tokenGenerator.generate(name, password);
-        valueStr.set(name, token, 60, TimeUnit.SECONDS);
-        valueStr.set(token, name, 60, TimeUnit.SECONDS);
+        valueStr.set(name, token, 10, TimeUnit.MINUTES);
+        valueStr.set(token, name, 10, TimeUnit.MINUTES);
         valueStr.set(token + name, date.toString(), 20, TimeUnit.SECONDS);
 
         user.setPassword(encodedPassword);

@@ -33,19 +33,22 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         Method method = handlerMethod.getMethod();
 
         if (method.getAnnotation(AuthToken.class) != null || handlerMethod.getBeanType().getAnnotation(AuthToken.class) != null) {
-            String httpHeaderName = "Authorization";
-            String token = request.getParameter(httpHeaderName);
+//            String httpHeaderName = "Authorization";
+            String httpHeaderName = "Token";
+            String token = request.getHeader(httpHeaderName);
+            System.out.println("token: " + token);
             ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
             String name = "";
             if (token != null && token.length() != 0) {
                 name = valueStr.get(token);
             }
+            System.out.println("name: " + name);
             if (name != null && !name.trim().equals("")) {
                 long tokeBirthTime = Long.parseLong(Objects.requireNonNull(valueStr.get(token + name)));
                 long diff = System.currentTimeMillis() - tokeBirthTime;
                 if (diff > 3e7) {
-                    redisTemplate.expire(name, 60, TimeUnit.SECONDS);
-                    redisTemplate.expire(token, 60, TimeUnit.SECONDS);
+                    redisTemplate.expire(name, 10, TimeUnit.MINUTES);
+                    redisTemplate.expire(token, 10, TimeUnit.MINUTES);
                     long newBirthTime = System.currentTimeMillis();
                     valueStr.set(token + name, Long.toString(newBirthTime));
                 }
