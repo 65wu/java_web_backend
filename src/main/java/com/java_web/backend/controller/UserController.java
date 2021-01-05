@@ -24,7 +24,6 @@ public class UserController {
                 urt.getEmail()
         );
     }
-    @AuthToken
     @PostMapping("/login")
     public MyResponse Login(@RequestBody @Valid UserLoginTransfer user) {
         return userService.Login(
@@ -32,6 +31,7 @@ public class UserController {
                 user.getPassword()
         );
     }
+    @AuthToken
     @PutMapping("/edit/password")
     public MyResponse EditPassword(@RequestBody @Valid UserEditPasswordTransfer user) {
         return userService.EditPassword(
@@ -39,6 +39,7 @@ public class UserController {
                 user.getPassword()
         );
     }
+    @AuthToken
     @PutMapping("/edit/basic")
     public MyResponse EditBasic(@RequestBody @Valid UserEditBasicTransfer user) {
         return userService.EditBasic(
