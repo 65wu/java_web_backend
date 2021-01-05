@@ -8,12 +8,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer{
+    // 用bean注册工厂方法，否则会导致空指针
     @Bean
-    AuthorizationInterceptor sysUserLoginInterceptor() {
+    AuthorizationInterceptor authorizationLoginInterceptorFactory() {
         return new AuthorizationInterceptor();
     }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(sysUserLoginInterceptor());
+        registry.addInterceptor(authorizationLoginInterceptorFactory());
     }
 }
