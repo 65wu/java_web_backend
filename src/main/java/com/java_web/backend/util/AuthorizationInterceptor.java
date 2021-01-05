@@ -46,7 +46,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             if (name != null && !name.trim().equals("")) {
                 long tokeBirthTime = Long.parseLong(Objects.requireNonNull(valueStr.get(token + name)));
                 long diff = System.currentTimeMillis() - tokeBirthTime;
-                if (diff > 3e7) {
+                if (diff > 3e8) {
                     redisTemplate.expire(name, 10, TimeUnit.MINUTES);
                     redisTemplate.expire(token, 10, TimeUnit.MINUTES);
                     long newBirthTime = System.currentTimeMillis();

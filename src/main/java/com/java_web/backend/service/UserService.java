@@ -51,7 +51,7 @@ public class UserService {
         String token = tokenGenerator.generate(name, password);
         valueStr.set(name, token, 10, TimeUnit.MINUTES);
         valueStr.set(token, name, 10, TimeUnit.MINUTES);
-        valueStr.set(token + name, date.toString(), 20, TimeUnit.SECONDS);
+        valueStr.set(token + name, date.toString(), 10, TimeUnit.MINUTES);
 
         user.setPassword(encodedPassword);
         user.setName(name);
