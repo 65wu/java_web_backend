@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 public class News {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private Integer newsId;
     private String title;

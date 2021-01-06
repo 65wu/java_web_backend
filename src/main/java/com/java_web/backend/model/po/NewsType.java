@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class NewsType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private Integer typeId;
     @Column(unique=true)
