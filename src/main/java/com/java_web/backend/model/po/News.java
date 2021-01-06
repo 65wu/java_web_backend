@@ -14,7 +14,12 @@ public class News {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     private Integer newsId;
-    @ManyToOne(fetch= FetchType.EAGER)
+    private String title;
+    private String content;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date publish_time;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
     @Cascade(CascadeType.ALL)
     private NewsType type;
@@ -22,12 +27,6 @@ public class News {
     @JoinColumn(name = "user_id")
     @Cascade(CascadeType.ALL)
     private User user;
-    private String title;
-    private String content;
-    @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date publish_time;
-
-
 
     public Integer getNewsId() {
         return newsId;
