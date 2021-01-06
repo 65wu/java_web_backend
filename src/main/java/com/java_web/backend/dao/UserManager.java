@@ -7,19 +7,20 @@ import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserManager {
-    @Update("update user set password=#{password} where username=#{username}")
+    @Update("update user set password=#{password} where user_id=#{userId}")
     void updateUserPassword(
             @Param("password") String password,
-            @Param("username") Integer username
+            @Param("userId") Integer userId
     );
-    @Update("update user set name=#{name}, email=#{email} where username=#{username}")
+    @Update("update user set username=#{username}, email=#{email}, nickname=#{nickname} where user_id=#{userId}")
     void updateUserBasic(
-            @Param("password") String name,
+            @Param("password") String username,
             @Param("password") String email,
-            @Param("username") Integer username
+            @Param("nickname") String nickname,
+            @Param("userId") Integer userId
     );
-    @Select("select username from user where name=#{name}")
-    Integer findIdByName(
-            @Param("name") String name
+    @Select("select user_id from user where username=#{username}")
+    Integer findIdByUsername(
+            @Param("username") String username
     );
 }

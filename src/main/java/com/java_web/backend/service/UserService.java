@@ -32,10 +32,11 @@ public class UserService {
 
     public MyResponse Register(
             String password,
-            String name,
-            String email
+            String username,
+            String email,
+            String nickname
     ) {
-        Integer id = userManager.findIdByName(name);
+        Integer id = userManager.findIdByUsername(username);
         if (id != null) {
             return new MyResponse(
                     1,
@@ -52,8 +53,9 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(password.trim());
         //写入数据库
         user.setPassword(encodedPassword);
-        user.setName(name);
+        user.setUsername(username);
         user.setEmail(email);
+        user.setNickname(nickname);
         user.setCreated_at(date);
         user.setUpdated_at(date);
         user.setStatus(0);
@@ -66,10 +68,10 @@ public class UserService {
     }
 
     public MyResponse Login(
-            String name,
+            String username,
             String rawPassword
     ) {
-        Integer id = userManager.findIdByName(name);
+        Integer id = userManager.findIdByUsername(username);
         Optional<User> optionalUser = userRepository.findById(id);
 
         if (optionalUser.isPresent()) {
@@ -81,9 +83,9 @@ public class UserService {
             if (passwordEncoder.matches(rawPassword, password)) {
                 ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
                 // 先查看token是否存在
-                String token = valueStr.get(name);
+                String token = valueStr.get(username);
                 if (token != null) {
-                    if(tokenHelper.renew(name, token)) {
+                    if(tokenHelper.renew(username, token)) {
                         Map<String, Object> result = new HashMap<>();
                         result.put("token", token);
                         return new MyResponse(
@@ -93,7 +95,7 @@ public class UserService {
                         );
                     }
                 }
-                token = tokenHelper.register(name, password);
+                token = tokenHelper.register(username, password);
                 Map<String, Object> result = new HashMap<>();
                 result.put("token", token);
                 return new MyResponse(
@@ -112,11 +114,20 @@ public class UserService {
         );
     }
 
-    public MyResponse EditPassword(Integer username, String rawPassword) {
+    public MyResponse EditPassword(String token, String rawPassword) {
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        String username = valueStr.get(token);
+        if(username == null) {
+            return new MyResponse(
+                    0,
+                    "请重新登录"
+            );
+        }
+        Integer userId = userManager.findIdByUsername(username);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(rawPassword.trim());
         try {
-            userManager.updateUserPassword(encodedPassword, username);
+            userManager.updateUserPassword(encodedPassword, userId);
             return new MyResponse(
                     1,
                     "密码修改成功"
@@ -130,9 +141,18 @@ public class UserService {
         }
     }
 
-    public MyResponse EditBasic(Integer username, String name, String email) {
+    public MyResponse EditBasic(String token, String nickname, String email) {
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        String username = valueStr.get(token);
+        if(username == null) {
+            return new MyResponse(
+                    0,
+                    "请重新登录"
+            );
+        }
+        Integer userId = userManager.findIdByUsername(username);
         try {
-            userManager.updateUserBasic(name, email, username);
+            userManager.updateUserBasic(username, email, nickname, userId);
             return new MyResponse(
                     1,
                     "基本信息修改成功"

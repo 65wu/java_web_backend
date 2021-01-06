@@ -34,12 +34,12 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             // 获取请求头中的token值
             String httpHeaderName = "Token";
             String token = request.getHeader(httpHeaderName);
-            // 用token查找name
+            // 用token查找username
             ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
             if (token != null && token.length() != 0) {
-                String name = valueStr.get(token);
-                if (name != null) {
-                    if(tokenHelper.renew(name, token))
+                String username = valueStr.get(token);
+                if (username != null) {
+                    if(tokenHelper.renew(username, token))
                         return true;
                 }
             }

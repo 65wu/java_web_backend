@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.http.HttpHeaders;
 
 @RestController
 public class UserController {
@@ -20,31 +21,32 @@ public class UserController {
     public MyResponse Register(@RequestBody @Valid UserRegisterTransfer urt) {
         return userService.Register(
                 urt.getPassword(),
-                urt.getName(),
-                urt.getEmail()
+                urt.getUsername(),
+                urt.getEmail(),
+                urt.getNickname()
         );
     }
     @PostMapping("/login")
     public MyResponse Login(@RequestBody @Valid UserLoginTransfer user) {
         return userService.Login(
-                user.getName(),
+                user.getUsername(),
                 user.getPassword()
         );
     }
     @AuthToken
     @PutMapping("/edit/password")
-    public MyResponse EditPassword(@RequestBody @Valid UserEditPasswordTransfer user) {
+    public MyResponse EditPassword(@RequestHeader("Token") String token, @RequestBody @Valid UserEditPasswordTransfer user) {
         return userService.EditPassword(
-                user.getUsername(),
+                token,
                 user.getPassword()
         );
     }
     @AuthToken
     @PutMapping("/edit/basic")
-    public MyResponse EditBasic(@RequestBody @Valid UserEditBasicTransfer user) {
+    public MyResponse EditBasic(@RequestHeader("Token") String token, @RequestBody @Valid UserEditBasicTransfer user) {
         return userService.EditBasic(
+                token,
                 user.getUsername(),
-                user.getName(),
                 user.getEmail()
         );
     }

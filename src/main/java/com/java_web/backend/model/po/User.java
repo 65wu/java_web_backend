@@ -11,16 +11,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull(message = "用户ID不能为空")
-    protected Integer username;
-    protected String password;
+    private Integer userId;
+    private String password;
     @Column(unique=true)
-    protected String name;
-    protected String email;
-    protected Integer status;
+    private String username;
+    private String nickname;
+    private String email;
+    private Integer status;
     @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    protected Date created_at;
+    private Date created_at;
     @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    protected Date updated_at;
+    private Date updated_at;
 
     public Date getCreated_at() {
         return created_at;
@@ -38,12 +39,12 @@ public class User {
         this.updated_at = updated_at;
     }
 
-    public Integer getUsername() {
-        return username;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUsername(Integer username) {
-        this.username = username;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {
@@ -54,12 +55,12 @@ public class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -76,5 +77,9 @@ public class User {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
