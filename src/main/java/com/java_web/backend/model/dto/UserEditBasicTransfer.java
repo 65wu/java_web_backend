@@ -4,12 +4,12 @@ import javax.validation.constraints.NotNull;
 
 public class UserEditBasicTransfer {
     @NotNull
-    private String username;
+    private String nickname;
     @NotNull
     private String email;
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
     public String getEmail() {

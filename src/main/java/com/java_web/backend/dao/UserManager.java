@@ -12,10 +12,9 @@ public interface UserManager {
             @Param("password") String password,
             @Param("userId") Integer userId
     );
-    @Update("update user set username=#{username}, email=#{email}, nickname=#{nickname} where user_id=#{userId}")
+    @Update("update user set email=#{email}, nickname=#{nickname} where user_id=#{userId}")
     void updateUserBasic(
-            @Param("password") String username,
-            @Param("password") String email,
+            @Param("email") String email,
             @Param("nickname") String nickname,
             @Param("userId") Integer userId
     );

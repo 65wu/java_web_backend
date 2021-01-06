@@ -154,7 +154,7 @@ public class UserService {
         }
         Integer userId = userManager.findIdByUsername(username);
         try {
-            userManager.updateUserBasic(username, email, nickname, userId);
+            userManager.updateUserBasic(email, nickname, userId);
             return new MyResponse(
                     1,
                     "基本信息修改成功"

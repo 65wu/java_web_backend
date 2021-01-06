@@ -46,7 +46,7 @@ public class UserController {
     public MyResponse EditBasic(@RequestHeader("Token") String token, @RequestBody @Valid UserEditBasicTransfer user) {
         return userService.EditBasic(
                 token,
-                user.getUsername(),
+                user.getNickname(),
                 user.getEmail()
         );
     }
