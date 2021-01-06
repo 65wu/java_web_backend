@@ -119,12 +119,6 @@ public class UserService {
     public MyResponse EditPassword(String token, String rawPassword) {
         ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
         String username = valueStr.get(token);
-        if(username == null) {
-            return new MyResponse(
-                    0,
-                    "请重新登录"
-            );
-        }
         Integer userId = userManager.findIdByUsername(username);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(rawPassword.trim());
@@ -146,12 +140,6 @@ public class UserService {
     public MyResponse EditBasic(String token, String nickname, String email) {
         ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
         String username = valueStr.get(token);
-        if(username == null) {
-            return new MyResponse(
-                    0,
-                    "请重新登录"
-            );
-        }
         Integer userId = userManager.findIdByUsername(username);
         try {
             userManager.updateUserBasic(email, nickname, userId);
