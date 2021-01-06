@@ -79,6 +79,10 @@ public class User {
         this.status = status;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }

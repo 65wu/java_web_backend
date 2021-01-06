@@ -71,9 +71,9 @@ public class UserService {
             String username,
             String rawPassword
     ) {
-        Integer id = userManager.findIdByUsername(username);
-        if(id != null) {
-            Optional<User> optionalUser = userRepository.findById(id);
+        Integer userId = userManager.findIdByUsername(username);
+        if(userId != null) {
+            Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isPresent()) {
                 // 准备比对密码
                 User user = optionalUser.get();
@@ -154,5 +154,25 @@ public class UserService {
                     "基本信息修改失败"
             );
         }
+    }
+    public MyResponse GetUserInfo(String token) {
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        String username = valueStr.get(token);
+        Integer userId = userManager.findIdByUsername(username);
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Map<String, Object> result = new HashMap<>();
+            result.put("user", user);
+            return new MyResponse(
+                    1,
+                    "获取成功",
+                    result
+            );
+        }
+        return new MyResponse(
+                0,
+                "获取失败"
+        );
     }
 }

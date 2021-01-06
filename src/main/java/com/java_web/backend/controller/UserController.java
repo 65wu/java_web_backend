@@ -50,4 +50,11 @@ public class UserController {
                 user.getEmail()
         );
     }
+    @AuthToken
+    @GetMapping("/info")
+    public MyResponse GetUserInfo(@RequestHeader("Token") String token) {
+        return userService.GetUserInfo(
+                token
+        );
+    }
 }
