@@ -163,7 +163,11 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             Map<String, Object> result = new HashMap<>();
-            result.put("user", user);
+            result.put("username", user.getUsername());
+            result.put("nickname", user.getNickname());
+            result.put("email", user.getEmail());
+            result.put("status", user.getStatus());
+            result.put("create_time", user.getCreated_at());
             return new MyResponse(
                     1,
                     "获取成功",
