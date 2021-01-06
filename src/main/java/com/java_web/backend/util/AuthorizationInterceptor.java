@@ -15,11 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.concurrent.TimeUnit;
 
 public class AuthorizationInterceptor implements HandlerInterceptor {
     @Autowired
     RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    TokenHelper tokenHelper;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -38,18 +39,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             if (token != null && token.length() != 0) {
                 String name = valueStr.get(token);
                 if (name != null) {
-                    String tokenBirthRaw = valueStr.get(token + name);
-                    if (tokenBirthRaw != null) {
-                        long tokeBirthTime = Long.parseLong(tokenBirthRaw);
-                        // 如果token失效已经超过3e5ms，即300s, 5min，对token进行续期
-                        if (System.currentTimeMillis() - tokeBirthTime > 3e5) {
-                            redisTemplate.expire(name, 10, TimeUnit.MINUTES);
-                            redisTemplate.expire(token, 10, TimeUnit.MINUTES);
-                            long newBirthTime = System.currentTimeMillis();
-                            valueStr.set(token + name, Long.toString(newBirthTime));
-                        }
+                    if(tokenHelper.renew(name, token))
                         return true;
-                    }
                 }
             }
             ObjectMapper mapper = new ObjectMapper();

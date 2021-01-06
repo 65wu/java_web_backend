@@ -5,6 +5,7 @@ import com.java_web.backend.dao.UserRepository;
 import com.java_web.backend.model.po.User;
 import com.java_web.backend.util.Md5TokenGenerator;
 import com.java_web.backend.util.MyResponse;
+import com.java_web.backend.util.TokenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -16,7 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @CrossOrigin(origins = "*")
@@ -26,7 +26,7 @@ public class UserService {
     @Autowired
     private UserManager userManager;
     @Autowired
-    private Md5TokenGenerator tokenGenerator;
+    private TokenHelper tokenHelper;
     @Autowired
     RedisTemplate<String, String> redisTemplate;
 
@@ -36,7 +36,7 @@ public class UserService {
             String email
     ) {
         Integer id = userManager.findIdByName(name);
-        if(id != null) {
+        if (id != null) {
             return new MyResponse(
                     1,
                     "用户名被占用，注册失败"
@@ -71,29 +71,19 @@ public class UserService {
     ) {
         Integer id = userManager.findIdByName(name);
         Optional<User> optionalUser = userRepository.findById(id);
-        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
 
-        if(optionalUser.isPresent()) {
+        if (optionalUser.isPresent()) {
             // 准备比对密码
             User user = optionalUser.get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String password = user.getPassword();
 
-            if(passwordEncoder.matches(rawPassword, password)) {
+            if (passwordEncoder.matches(rawPassword, password)) {
+                ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
                 // 先查看token是否存在
                 String token = valueStr.get(name);
-                if(token != null) {
-                    String tokenBirthRaw = valueStr.get(token + name);
-                    if(tokenBirthRaw != null) {
-                        // 取出token注册时的时间戳
-                        long tokeBirthTime = Long.parseLong(tokenBirthRaw);
-                        // 若token寿命过半则更新
-                        if (System.currentTimeMillis() - tokeBirthTime > 3e5) {
-                            redisTemplate.expire(name, 10, TimeUnit.MINUTES);
-                            redisTemplate.expire(token, 10, TimeUnit.MINUTES);
-                            long newBirthTime = System.currentTimeMillis();
-                            valueStr.set(token + name, Long.toString(newBirthTime));
-                        }
+                if (token != null) {
+                    if(tokenHelper.renew(name, token)) {
                         Map<String, Object> result = new HashMap<>();
                         result.put("token", token);
                         return new MyResponse(
@@ -103,12 +93,7 @@ public class UserService {
                         );
                     }
                 }
-                // redis token初始化或重新注册
-                token = tokenGenerator.generate(name, password);
-                valueStr.set(name, token, 10, TimeUnit.MINUTES);
-                valueStr.set(token, name, 10, TimeUnit.MINUTES);
-                long birthTime = System.currentTimeMillis();
-                valueStr.set(token + name, birthTime + "", 10, TimeUnit.MINUTES);
+                token = tokenHelper.register(name, password);
                 Map<String, Object> result = new HashMap<>();
                 result.put("token", token);
                 return new MyResponse(
@@ -116,8 +101,7 @@ public class UserService {
                         "登录成功",
                         result
                 );
-            }
-            else
+            } else
                 return new MyResponse(
                         0,
                         "用户名或密码错误"
@@ -127,6 +111,7 @@ public class UserService {
                 "用户名不存在"
         );
     }
+
     public MyResponse EditPassword(Integer username, String rawPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(rawPassword.trim());
@@ -144,6 +129,7 @@ public class UserService {
             );
         }
     }
+
     public MyResponse EditBasic(Integer username, String name, String email) {
         try {
             userManager.updateUserBasic(name, email, username);
