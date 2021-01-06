@@ -1,9 +1,9 @@
 package com.java_web.backend.controller;
 
-import com.java_web.backend.model.dto.UserEditBasicTransfer;
-import com.java_web.backend.model.dto.UserEditPasswordTransfer;
-import com.java_web.backend.model.dto.UserLoginTransfer;
-import com.java_web.backend.model.dto.UserRegisterTransfer;
+import com.java_web.backend.model.dto.User.EditBasicTransfer;
+import com.java_web.backend.model.dto.User.EditPasswordTransfer;
+import com.java_web.backend.model.dto.User.LoginTransfer;
+import com.java_web.backend.model.dto.User.RegisterTransfer;
 import com.java_web.backend.service.UserService;
 import com.java_web.backend.util.AuthToken;
 import com.java_web.backend.util.MyResponse;
@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public MyResponse Register(@RequestBody @Valid UserRegisterTransfer urt) {
+    public MyResponse Register(@RequestBody @Valid RegisterTransfer urt) {
         return userService.Register(
                 urt.getPassword(),
                 urt.getUsername(),
@@ -27,7 +27,7 @@ public class UserController {
         );
     }
     @PostMapping("/login")
-    public MyResponse Login(@RequestBody @Valid UserLoginTransfer user) {
+    public MyResponse Login(@RequestBody @Valid LoginTransfer user) {
         return userService.Login(
                 user.getUsername(),
                 user.getPassword()
@@ -35,7 +35,7 @@ public class UserController {
     }
     @AuthToken
     @PutMapping("/edit/password")
-    public MyResponse EditPassword(@RequestHeader("Token") String token, @RequestBody @Valid UserEditPasswordTransfer user) {
+    public MyResponse EditPassword(@RequestHeader("Token") String token, @RequestBody @Valid EditPasswordTransfer user) {
         return userService.EditPassword(
                 token,
                 user.getPassword()
@@ -43,7 +43,7 @@ public class UserController {
     }
     @AuthToken
     @PutMapping("/edit/basic")
-    public MyResponse EditBasic(@RequestHeader("Token") String token, @RequestBody @Valid UserEditBasicTransfer user) {
+    public MyResponse EditBasic(@RequestHeader("Token") String token, @RequestBody @Valid EditBasicTransfer user) {
         return userService.EditBasic(
                 token,
                 user.getNickname(),

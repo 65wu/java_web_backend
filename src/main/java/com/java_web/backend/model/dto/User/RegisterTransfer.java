@@ -1,8 +1,8 @@
-package com.java_web.backend.model.dto;
+package com.java_web.backend.model.dto.User;
 
 import javax.validation.constraints.NotNull;
 
-public class UserRegisterTransfer {
+public class RegisterTransfer {
     @NotNull
     private String password;
     @NotNull

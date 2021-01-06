@@ -1,8 +1,8 @@
-package com.java_web.backend.model.dto;
+package com.java_web.backend.model.dto.User;
 
 import javax.validation.constraints.NotNull;
 
-public class UserEditBasicTransfer {
+public class EditBasicTransfer {
     @NotNull
     private String nickname;
     @NotNull
