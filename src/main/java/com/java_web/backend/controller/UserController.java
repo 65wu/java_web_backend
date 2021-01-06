@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.http.HttpHeaders;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
