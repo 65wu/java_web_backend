@@ -6,12 +6,15 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class NewsType {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private Integer typeId;
     @Column(unique=true)
     @NotNull
     private String type;
+
+    public NewsType() {
+
+    }
 
     public Integer getTypeId() {
         return typeId;
@@ -26,6 +29,11 @@ public class NewsType {
     }
 
     public void setType(String type) {
+        this.type = type;
+    }
+
+    public NewsType(Integer typeId, String type) {
+        this.typeId = typeId;
         this.type = type;
     }
 }
