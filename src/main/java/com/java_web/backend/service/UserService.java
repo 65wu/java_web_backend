@@ -72,43 +72,45 @@ public class UserService {
             String rawPassword
     ) {
         Integer id = userManager.findIdByUsername(username);
-        Optional<User> optionalUser = userRepository.findById(id);
+        if(id != null) {
+            Optional<User> optionalUser = userRepository.findById(id);
+            if (optionalUser.isPresent()) {
+                // 准备比对密码
+                User user = optionalUser.get();
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String password = user.getPassword();
 
-        if (optionalUser.isPresent()) {
-            // 准备比对密码
-            User user = optionalUser.get();
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String password = user.getPassword();
-
-            if (passwordEncoder.matches(rawPassword, password)) {
-                ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
-                // 先查看token是否存在
-                String token = valueStr.get(username);
-                if (token != null) {
-                    if(tokenHelper.renew(username, token)) {
-                        Map<String, Object> result = new HashMap<>();
-                        result.put("token", token);
-                        return new MyResponse(
-                                1,
-                                "登录成功",
-                                result
-                        );
+                if (passwordEncoder.matches(rawPassword, password)) {
+                    ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+                    // 先查看token是否存在
+                    String token = valueStr.get(username);
+                    if (token != null) {
+                        if(tokenHelper.renew(username, token)) {
+                            Map<String, Object> result = new HashMap<>();
+                            result.put("token", token);
+                            return new MyResponse(
+                                    1,
+                                    "登录成功",
+                                    result
+                            );
+                        }
                     }
-                }
-                token = tokenHelper.register(username, password);
-                Map<String, Object> result = new HashMap<>();
-                result.put("token", token);
-                return new MyResponse(
-                        1,
-                        "登录成功",
-                        result
-                );
-            } else
-                return new MyResponse(
-                        0,
-                        "用户名或密码错误"
-                );
-        } else return new MyResponse(
+                    token = tokenHelper.register(username, password);
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("token", token);
+                    return new MyResponse(
+                            1,
+                            "登录成功",
+                            result
+                    );
+                } else
+                    return new MyResponse(
+                            0,
+                            "用户名或密码错误"
+                    );
+            }
+        }
+        return new MyResponse(
                 0,
                 "用户名不存在"
         );
