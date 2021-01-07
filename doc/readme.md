@@ -227,8 +227,6 @@
   | user_id  | 新闻作者的主键 |
   | nickname | 新闻作者的昵称 |
 
-  
-
 + Response Body Example
 
   ```json
@@ -245,6 +243,36 @@
               "nickname": "hhh"
           }
       }
+  }
+  ```
+
+
+---
+
+#### 修改某一新闻
+
++ Url: /news/edit
+
++ Method: PUT
+
++ Request Body Example
+
+  ```json
+  {
+      "newsId": 1,
+      "title": "修改标题0",
+      "content": "修改内容0",
+      "typeId": 1
+  }
+  ```
+
++ Response Body Example
+
+  ```json
+  {
+      "code": 1,
+      "message": "新闻修改成功",
+      "data": null
   }
   ```
 
