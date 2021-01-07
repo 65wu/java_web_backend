@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-@CrossOrigin(origins = "*")
 public class UserService {
     @Autowired
     private UserRepository userRepository;
