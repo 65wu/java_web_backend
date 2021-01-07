@@ -33,7 +33,7 @@ public interface NewsManager {
             WHERE news_id = #{newsId};
             """)
     NewsDetail getNewsDetail(@Param("newsId") Integer newsId);
-    @Update("UPDATE news SET title = #{title}, content = #{content}, type_id = #{type_id} WHERE news_id = #{newsId}")
+    @Update("UPDATE news SET title = #{title}, content = #{content}, type_id = #{typeId} WHERE news_id = #{newsId}")
     void updateNews(
             @Param("title") String title,
             @Param("content") String content,

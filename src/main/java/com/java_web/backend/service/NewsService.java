@@ -61,14 +61,18 @@ public class NewsService {
         if (optionalNews.isPresent()) {
             News news = optionalNews.get();
             Integer ownerUserId = news.getUser().getUserId();
-            if(!loginUserId.equals(ownerUserId)) {
+            if(loginUserId.equals(ownerUserId)) {
                 try {
                     newsManager.updateNews(title, content, typeId, newsId);
+                    return new MyResponse(
+                            1,
+                            "新闻修改成功"
+                    );
                 } catch (Exception e) {
                     e.printStackTrace();
                     return new MyResponse(
                             0,
-                            "新闻更新失败"
+                            "新闻修改失败"
                     );
                 }
             }
