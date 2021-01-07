@@ -33,12 +33,10 @@ public class NewsService {
         PageHelper.startPage(pageNo,pageSize);
         ArrayList<NewsBasic> newsList = newsManager.getNewsAll();
         PageInfo<NewsBasic> pageInfo = new PageInfo<>(newsList);
-        Map<String, Object> result = new HashMap<>();
-        result.put("news_list", pageInfo);
         return new MyResponse(
                 1,
                 "获取成功",
-                result
+                pageInfo
         );
     }
     public MyResponse GetDetail(Integer newsId) {
