@@ -1,4 +1,4 @@
-package com.java_web.backend.dao;
+package com.java_web.backend.dao.User;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

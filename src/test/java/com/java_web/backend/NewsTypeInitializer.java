@@ -1,12 +1,10 @@
 package com.java_web.backend;
 
-import com.java_web.backend.dao.NewsTypeRepository;
-import com.java_web.backend.model.po.News;
+import com.java_web.backend.dao.News.NewsTypeRepository;
 import com.java_web.backend.model.po.NewsType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 

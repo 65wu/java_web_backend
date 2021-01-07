@@ -1,9 +1,8 @@
 package com.java_web.backend.service;
 
-import com.java_web.backend.dao.UserManager;
-import com.java_web.backend.dao.UserRepository;
+import com.java_web.backend.dao.User.UserManager;
+import com.java_web.backend.dao.User.UserRepository;
 import com.java_web.backend.model.po.User;
-import com.java_web.backend.util.Md5TokenGenerator;
 import com.java_web.backend.util.MyResponse;
 import com.java_web.backend.util.TokenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Date;
 import java.util.HashMap;
