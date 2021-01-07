@@ -1,10 +1,12 @@
 package com.java_web.backend.model.dto.News;
 
 public class NewsBasic {
+    private Integer newsId;
     private String content;
     private String type;
     private String publish_time;
-    NewsBasic(String content, String type, String publish_time) {
+    NewsBasic(Integer newsId, String content, String type, String publish_time) {
+        this.newsId = newsId;
         this.content = content;
         this.type = type;
         this.publish_time = publish_time;
@@ -32,5 +34,13 @@ public class NewsBasic {
 
     public void setPublish_time(String publish_time) {
         this.publish_time = publish_time;
+    }
+
+    public Integer getNewsId() {
+        return newsId;
+    }
+
+    public void setNewsId(Integer newsId) {
+        this.newsId = newsId;
     }
 }

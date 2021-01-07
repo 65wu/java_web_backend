@@ -9,7 +9,8 @@ import java.util.ArrayList;
 @Mapper
 public interface NewsManager {
     @Select("""
-            SELECT content,
+            SELECT news_id,
+                   content,
                    type,
                    publish_time
             FROM news
