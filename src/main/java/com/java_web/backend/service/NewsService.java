@@ -84,4 +84,39 @@ public class NewsService {
                 "新闻不存在"
         );
     }
+    public MyResponse Delete(String token, Integer newsId) {
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        String username = valueStr.get(token);
+        // 取出当前token用户的user id
+        Integer loginUserId = userManager.findIdByUsername(username);
+        // 通过news id找到对应的作者id
+        Optional<News> optionalNews = newsRepository.findById(newsId);
+        if (optionalNews.isPresent()) {
+            News news = optionalNews.get();
+            Integer ownerUserId = news.getUser().getUserId();
+            if(loginUserId.equals(ownerUserId)) {
+                try {
+                    newsManager.deleteNews(newsId);
+                    return new MyResponse(
+                            1,
+                            "新闻删除成功"
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return new MyResponse(
+                            0,
+                            "新闻删除失败"
+                    );
+                }
+            }
+            return new MyResponse(
+                    0,
+                    "您没有删除该新闻的权限"
+            );
+        }
+        return new MyResponse(
+                0,
+                "新闻不存在"
+        );
+    }
 }

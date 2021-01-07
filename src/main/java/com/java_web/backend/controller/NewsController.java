@@ -1,5 +1,6 @@
 package com.java_web.backend.controller;
 
+import com.java_web.backend.model.dto.News.DeleteNews;
 import com.java_web.backend.model.dto.News.EditNews;
 import com.java_web.backend.service.NewsService;
 import com.java_web.backend.util.AuthToken;
@@ -40,6 +41,17 @@ public class NewsController {
             editNews.getTitle(),
             editNews.getContent(),
             editNews.getTypeId()
+        );
+    }
+    @AuthToken
+    @DeleteMapping("/delete")
+    public MyResponse Edit(
+            @RequestHeader("Token") String token,
+            @RequestBody @Valid DeleteNews deleteNews
+    ) {
+        return newsService.Delete(
+                token,
+                deleteNews.getNewsId()
         );
     }
 }

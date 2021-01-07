@@ -2,10 +2,7 @@ package com.java_web.backend.dao.News;
 
 import com.java_web.backend.model.dto.News.NewsBasic;
 import com.java_web.backend.model.dto.News.NewsDetail;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 
@@ -38,6 +35,10 @@ public interface NewsManager {
             @Param("title") String title,
             @Param("content") String content,
             @Param("typeId") Integer typeId,
+            @Param("newsId") Integer newsId
+    );
+    @Delete("DELETE FROM news WHERE news_id=#{newsId}")
+    void deleteNews(
             @Param("newsId") Integer newsId
     );
 }
