@@ -20,4 +20,10 @@ public class NewsController {
     ) {
         return newsService.GetAll(pageNo, pageSize);
     }
+    @GetMapping("detail")
+    public MyResponse GetDetail(
+            @RequestParam Integer news_id
+    ) {
+        return newsService.GetDetail(news_id);
+    }
 }
