@@ -133,3 +133,120 @@
   }
   ```
 
+
+
+## News
+
+#### 获取所有新闻
+
++ Url: /news/all
+
++ Method: GET
+
++ Request Params
+
+  | Key      | Description                            |
+  | :------- | -------------------------------------- |
+  | pageNo   | 当前页面id，以1开始                    |
+  | pageSize | 一张页面最多显示的新闻数量，默认值为10 |
+
++ Response Params
+
+  | Key   | Description        |
+  | ----- | ------------------ |
+  | total | 所有新闻纪录的数量 |
+  | pages | 页面总数           |
+  | list  | 存取新闻的列表     |
+
+  
+
++ Response Body Example
+
+  ```json
+  {
+      "code": 1,
+      "message": "获取成功",
+      "data": {
+          "pageNum": 1,
+          "pageSize": 10,
+          "size": 2,
+          "startRow": 1,
+          "endRow": 2,
+          "total": 2,
+          "pages": 1,
+          "list": [
+              {
+                  "newsId": 1,
+                  "content": "修改内容0",
+                  "type": "国内",
+                  "publish_time": "2021-01-07 13:03:21"
+              },
+              {
+                  "newsId": 2,
+                  "content": "新内容",
+                  "type": "国际",
+                  "publish_time": "2021-01-07 13:22:06"
+              }
+          ],
+          "prePage": 0,
+          "nextPage": 0,
+          "isFirstPage": true,
+          "isLastPage": true,
+          "hasPreviousPage": false,
+          "hasNextPage": false,
+          "navigatePages": 8,
+          "navigatepageNums": [
+              1
+          ],
+          "navigateFirstPage": 1,
+          "navigateLastPage": 1,
+          "lastPage": 1,
+          "firstPage": 1
+      }
+  }
+  ```
+
+---
+
+#### 获取某一新闻详细信息
+
++ Url: /news/detail
+
++ Method: GET
+
++ Request Params
+
+  | Key     | Description |
+  | ------- | ----------- |
+  | news_id | 新闻的主键  |
+
++ Response Body Params
+
+  | Key      | Description    |
+  | -------- | -------------- |
+  | user_id  | 新闻作者的主键 |
+  | nickname | 新闻作者的昵称 |
+
+  
+
++ Response Body Example
+
+  ```json
+  {
+      "code": 1,
+      "message": "获取成功",
+      "data": {
+          "news_detail": {
+              "title": "修改标题0",
+              "content": "修改内容0",
+              "publish_time": "2021-01-07 13:03:21",
+              "type": "国内",
+              "user_id": 4,
+              "nickname": "hhh"
+          }
+      }
+  }
+  ```
+
+  
+
