@@ -1,15 +1,17 @@
 package com.java_web.backend.controller;
 
+import com.java_web.backend.model.dto.News.EditNews;
 import com.java_web.backend.service.NewsService;
+import com.java_web.backend.util.AuthToken;
 import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/news")
+@CrossOrigin
 public class NewsController {
     @Autowired
     private NewsService newsService;
@@ -25,5 +27,19 @@ public class NewsController {
             @RequestParam Integer news_id
     ) {
         return newsService.GetDetail(news_id);
+    }
+    @AuthToken
+    @PutMapping("/edit")
+    public MyResponse Edit(
+            @RequestHeader("Token") String token,
+            @RequestBody @Valid EditNews editNews
+    ) {
+        return newsService.Edit(
+            token,
+            editNews.getNewsId(),
+            editNews.getTitle(),
+            editNews.getContent(),
+            editNews.getTypeId()
+        );
     }
 }

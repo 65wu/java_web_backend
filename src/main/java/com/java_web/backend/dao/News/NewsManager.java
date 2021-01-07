@@ -5,6 +5,7 @@ import com.java_web.backend.model.dto.News.NewsDetail;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.ArrayList;
 
@@ -32,4 +33,11 @@ public interface NewsManager {
             WHERE news_id = #{newsId};
             """)
     NewsDetail getNewsDetail(@Param("newsId") Integer newsId);
+    @Update("UPDATE news SET title = #{title}, content = #{content}, type_id = #{type_id} WHERE news_id = #{newsId}")
+    void updateNews(
+            @Param("title") String title,
+            @Param("content") String content,
+            @Param("typeId") Integer typeId,
+            @Param("newsId") Integer newsId
+    );
 }

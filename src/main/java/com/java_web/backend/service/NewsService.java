@@ -4,23 +4,31 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.java_web.backend.dao.News.NewsManager;
 import com.java_web.backend.dao.News.NewsRepository;
+import com.java_web.backend.dao.User.UserManager;
 import com.java_web.backend.model.dto.News.NewsBasic;
 import com.java_web.backend.model.dto.News.NewsDetail;
 import com.java_web.backend.model.po.News;
 import com.java_web.backend.util.MyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class NewsService {
     @Autowired
     private NewsRepository newsRepository;
     @Autowired
+    RedisTemplate<String, String> redisTemplate;
+    @Autowired
     private NewsManager newsManager;
+    @Autowired
+    private UserManager userManager;
     public MyResponse GetAll(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo,pageSize);
         ArrayList<NewsBasic> newsList = newsManager.getNewsAll();
@@ -41,6 +49,37 @@ public class NewsService {
                 1,
                 "获取成功",
                 result
+        );
+    }
+    public MyResponse Edit(String token, Integer newsId, String title, String content, Integer typeId) {
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        String username = valueStr.get(token);
+        // 取出当前token用户的user id
+        Integer loginUserId = userManager.findIdByUsername(username);
+        // 通过news id找到对应的作者id
+        Optional<News> optionalNews = newsRepository.findById(newsId);
+        if (optionalNews.isPresent()) {
+            News news = optionalNews.get();
+            Integer ownerUserId = news.getUser().getUserId();
+            if(!loginUserId.equals(ownerUserId)) {
+                try {
+                    newsManager.updateNews(title, content, typeId, newsId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return new MyResponse(
+                            0,
+                            "新闻更新失败"
+                    );
+                }
+            }
+            return new MyResponse(
+                    0,
+                    "您没有修改该新闻的权限"
+            );
+        }
+        return new MyResponse(
+                0,
+                "新闻不存在"
         );
     }
 }
