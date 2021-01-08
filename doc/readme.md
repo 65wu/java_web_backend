@@ -275,11 +275,11 @@
 
 + Response Body Params
 
-  | Key      | Description                              |
-  | -------- | ---------------------------------------- |
-  | user_id  | 新闻作者的主键                           |
-  | nickname | 新闻作者的昵称                           |
-  | own      | 布尔值，true代表查询的新闻作者是登录用户 |
+  | Key      | Description                           |
+  | -------- | ------------------------------------- |
+  | user_id  | 新闻作者的主键                        |
+  | nickname | 新闻作者的昵称                        |
+  | own      | 布尔值，1代表查询的新闻作者是登录用户 |
 
 + Response Body Example
 
@@ -296,7 +296,7 @@
               "user_id": 4,
               "nickname": "hhh"
           },
-          "own": true
+          "own": 1
       }
   }
   ```
