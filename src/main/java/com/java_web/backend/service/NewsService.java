@@ -35,14 +35,30 @@ public class NewsService {
                 pageInfo
         );
     }
-    public MyResponse GetDetail(Integer newsId) {
-        NewsDetail newsDetail = newsManager.getNewsDetail(newsId);
-        Map<String, Object> result = new HashMap<>();
-        result.put("news_detail", newsDetail);
+    public MyResponse GetDetail(String token, Integer newsId) {
+        Integer loginUserId = tokenHelper.getUserId(token);
+        // 默认查询的新闻不是该登录用户
+        boolean own = false;
+        // 通过news id找到对应的作者id
+        Optional<News> optionalNews = newsRepository.findById(newsId);
+        if (optionalNews.isPresent()) {
+            News news = optionalNews.get();
+            Integer ownerUserId = news.getUser().getUserId();
+            if (loginUserId.equals(ownerUserId))
+                own = true;
+            NewsDetail newsDetail = newsManager.getNewsDetail(newsId);
+            Map<String, Object> result = new HashMap<>();
+            result.put("news_detail", newsDetail);
+            result.put("own", own);
+            return new MyResponse(
+                    1,
+                    "获取成功",
+                    result
+            );
+        }
         return new MyResponse(
-                1,
-                "获取成功",
-                result
+                0,
+                "获取失败"
         );
     }
     public MyResponse edit(String token, Integer newsId, String title, String content, Integer typeId) {

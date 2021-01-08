@@ -24,11 +24,13 @@ public class NewsController {
     ) {
         return newsService.GetAll(pageNo, pageSize);
     }
-    @GetMapping("detail")
+    @AuthToken
+    @GetMapping("/detail")
     public MyResponse getDetail(
+            @RequestHeader("Token") String token,
             @RequestParam Integer newsId
     ) {
-        return newsService.GetDetail(newsId);
+        return newsService.GetDetail(token, newsId);
     }
     @AuthToken
     @PutMapping("/edit")
