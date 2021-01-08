@@ -367,7 +367,7 @@
 
 + Url: /news/delete
 
-+ Method
++ Method: DELETE
 
 + Request Body Example
 
