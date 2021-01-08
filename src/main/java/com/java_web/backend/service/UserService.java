@@ -40,7 +40,7 @@ public class UserService {
         Integer id = userManager.findIdByUsername(username);
         if (id != null) {
             return new MyResponse(
-                    1,
+                    0,
                     "用户名被占用，注册失败"
             );
         }
