@@ -1,7 +1,9 @@
 package com.java_web.backend.service;
 
+import com.java_web.backend.dao.User.RoleRepository;
 import com.java_web.backend.dao.User.UserManager;
 import com.java_web.backend.dao.User.UserRepository;
+import com.java_web.backend.model.po.Role;
 import com.java_web.backend.model.po.User;
 import com.java_web.backend.util.MyResponse;
 import com.java_web.backend.util.TokenHelper;
@@ -26,6 +28,8 @@ public class UserService {
     private TokenHelper tokenHelper;
     @Autowired
     RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private RoleRepository roleRepository;
 
     public MyResponse Register(
             String password,
@@ -48,20 +52,32 @@ public class UserService {
         // 密码加密
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password.trim());
-        //写入数据库
-        user.setPassword(encodedPassword);
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setNickname(nickname);
-        user.setCreated_at(date);
-        user.setUpdated_at(date);
-        user.setStatus(0);
+        // 获得普通用户权限
+        Role normalRole = roleRepository.findByName("普通用户");
 
-        userRepository.save(user);
-        return new MyResponse(
-                1,
-                "注册成功"
-        );
+        try {
+            //写入数据库
+            user.setPassword(encodedPassword);
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setNickname(nickname);
+            user.setCreated_at(date);
+            user.setUpdated_at(date);
+            user.setStatus(0);
+            user.setRole(normalRole);
+
+            userRepository.save(user);
+            return new MyResponse(
+                    1,
+                    "注册成功"
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new MyResponse(
+                    0,
+                    "注册失败"
+            );
+        }
     }
 
     public MyResponse Login(

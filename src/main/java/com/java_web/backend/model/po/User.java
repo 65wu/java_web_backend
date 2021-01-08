@@ -92,4 +92,12 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
