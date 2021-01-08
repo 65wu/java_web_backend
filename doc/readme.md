@@ -276,5 +276,34 @@
   }
   ```
 
+
+---
+
+#### 发布新闻
+
++ Url: /news/publish
+
++ Method: POST
+
++ Request Body Example
+
+  ```json
+  {
+      "title": "发布标题",
+      "content": "发布内容",
+      "typeId": 1
+  }
+  ```
+
++ Response Body Example
+
+  ```json
+  {
+      "code": 1,
+      "message": "发布成功",
+      "data": null
+  }
+  ```
+
   
 
