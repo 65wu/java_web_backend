@@ -1,6 +1,7 @@
 package com.java_web.backend.model.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,11 @@ public class User {
     private Date created_at;
     @JsonFormat(shape= JsonFormat.Shape.STRING,pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updated_at;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private Role role;
 
     public Date getCreated_at() {
         return created_at;
