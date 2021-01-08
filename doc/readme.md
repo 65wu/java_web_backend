@@ -271,7 +271,7 @@
 
   | Key     | Description |
   | ------- | ----------- |
-  | news_id | 新闻的主键  |
+  | newsId | 新闻的主键  |
 
 + Response Body Params
 

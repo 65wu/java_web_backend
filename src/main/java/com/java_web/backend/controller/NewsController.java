@@ -26,9 +26,9 @@ public class NewsController {
     }
     @GetMapping("detail")
     public MyResponse getDetail(
-            @RequestParam Integer news_id
+            @RequestParam Integer newsId
     ) {
-        return newsService.GetDetail(news_id);
+        return newsService.GetDetail(newsId);
     }
     @AuthToken
     @PutMapping("/edit")
