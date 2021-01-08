@@ -2,22 +2,22 @@ package com.java_web.backend.model.dto.News;
 
 public class NewsBasic {
     private Integer newsId;
-    private String content;
+    private String title;
     private String type;
     private String publish_time;
-    NewsBasic(Integer newsId, String content, String type, String publish_time) {
+    NewsBasic(Integer newsId, String title, String type, String publish_time) {
         this.newsId = newsId;
-        this.content = content;
+        this.title = title;
         this.type = type;
         this.publish_time = publish_time;
     }
 
-    public String getContent() {
-        return content;
+    public String getTitle() {
+        return title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getType() {

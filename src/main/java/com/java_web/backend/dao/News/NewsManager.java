@@ -11,7 +11,7 @@ import java.util.Date;
 public interface NewsManager {
     @Select("""
             SELECT news_id,
-                   content,
+                   title,
                    type,
                    publish_time
             FROM news
