@@ -9,7 +9,6 @@ import com.java_web.backend.model.dto.News.NewsDetail;
 import com.java_web.backend.model.po.News;
 import com.java_web.backend.util.MyResponse;
 import com.java_web.backend.util.TokenHelper;
-import com.sun.xml.bind.v2.runtime.output.SAXOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class NewsService {
     private NewsManager newsManager;
     @Autowired
     private TokenHelper tokenHelper;
-    public MyResponse GetAll(int pageNo, int pageSize) {
+    public MyResponse getAll(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo,pageSize);
         ArrayList<NewsBasic> newsList = newsManager.getNewsAll();
         PageInfo<NewsBasic> pageInfo = new PageInfo<>(newsList);
@@ -36,7 +35,7 @@ public class NewsService {
                 pageInfo
         );
     }
-    public MyResponse GetDetail(String token, Integer newsId) {
+    public MyResponse getDetail(String token, Integer newsId) {
         Integer loginUserId = tokenHelper.getUserId(token);
         // 默认查询的新闻不是该登录用户
         int own = 0;

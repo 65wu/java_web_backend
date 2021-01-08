@@ -22,7 +22,7 @@ public class NewsController {
             @RequestParam(defaultValue = "1") int pageNo,
             @RequestParam(defaultValue = "10") int pageSize
     ) {
-        return newsService.GetAll(pageNo, pageSize);
+        return newsService.getAll(pageNo, pageSize);
     }
     @AuthToken
     @GetMapping("/detail")
@@ -30,7 +30,7 @@ public class NewsController {
             @RequestHeader("Token") String token,
             @RequestParam Integer newsId
     ) {
-        return newsService.GetDetail(token, newsId);
+        return newsService.getDetail(token, newsId);
     }
     @AuthToken
     @PutMapping("/edit")
