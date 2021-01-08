@@ -4,11 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.java_web.backend.dao.News.NewsManager;
 import com.java_web.backend.dao.News.NewsRepository;
-import com.java_web.backend.dao.User.UserManager;
 import com.java_web.backend.model.dto.News.NewsBasic;
 import com.java_web.backend.model.dto.News.NewsDetail;
 import com.java_web.backend.model.po.News;
 import com.java_web.backend.util.MyResponse;
+import com.java_web.backend.util.TokenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -25,7 +25,7 @@ public class NewsService {
     @Autowired
     private NewsManager newsManager;
     @Autowired
-    private UserManager userManager;
+    private TokenHelper tokenHelper;
     public MyResponse GetAll(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo,pageSize);
         ArrayList<NewsBasic> newsList = newsManager.getNewsAll();
@@ -47,10 +47,7 @@ public class NewsService {
         );
     }
     public MyResponse edit(String token, Integer newsId, String title, String content, Integer typeId) {
-        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
-        String username = valueStr.get(token);
-        // 取出当前token用户的user id
-        Integer loginUserId = userManager.findIdByUsername(username);
+        Integer loginUserId = tokenHelper.getUserId(token);
         // 通过news id找到对应的作者id
         Optional<News> optionalNews = newsRepository.findById(newsId);
         if (optionalNews.isPresent()) {
@@ -82,10 +79,7 @@ public class NewsService {
         );
     }
     public MyResponse delete(String token, Integer newsId) {
-        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
-        String username = valueStr.get(token);
-        // 取出当前token用户的user id
-        Integer loginUserId = userManager.findIdByUsername(username);
+        Integer loginUserId = tokenHelper.getUserId(token);
         // 通过news id找到对应的作者id
         Optional<News> optionalNews = newsRepository.findById(newsId);
         if (optionalNews.isPresent()) {
@@ -117,9 +111,7 @@ public class NewsService {
         );
     }
     public MyResponse publish(String token, String content, String title, Integer typeId) {
-        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
-        String username = valueStr.get(token);
-        Integer userId = userManager.findIdByUsername(username);
+        Integer userId = tokenHelper.getUserId(token);
         Date date = new Date();
         try {
             newsManager.publishNews(

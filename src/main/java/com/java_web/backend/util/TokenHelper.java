@@ -1,5 +1,6 @@
 package com.java_web.backend.util;
 
+import com.java_web.backend.dao.User.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -13,6 +14,8 @@ public class TokenHelper {
     private Md5TokenGenerator tokenGenerator;
     @Autowired
     RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private UserManager userManager;
 
     // redis token初始化或重新注册
     public String register(String username, String password) {
@@ -40,5 +43,11 @@ public class TokenHelper {
             return true;
         }
         return false;
+    }
+    // 通过token，先找到username，再换为userId
+    public Integer getUserId(String token) {
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        String username = valueStr.get(token);
+        return userManager.findIdByUsername(username);
     }
 }
