@@ -154,8 +154,9 @@ public class UserService {
         ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
         String username = valueStr.get(token);
         Integer userId = userManager.findIdByUsername(username);
+        Date date = new Date();
         try {
-            userManager.updateUserBasic(email, nickname, userId);
+            userManager.updateUserBasic(email, nickname, date, userId);
             return new MyResponse(
                     1,
                     "基本信息修改成功"
