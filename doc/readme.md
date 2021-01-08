@@ -169,38 +169,91 @@
       "data": {
           "pageNum": 1,
           "pageSize": 10,
-          "size": 2,
+          "size": 10,
           "startRow": 1,
-          "endRow": 2,
-          "total": 2,
-          "pages": 1,
+          "endRow": 10,
+          "total": 52,
+          "pages": 6,
           "list": [
               {
                   "newsId": 1,
-                  "content": "修改内容0",
+                  "title": "发布标题",
                   "type": "国内",
-                  "publish_time": "2021-01-07 13:03:21"
+                  "publish_time": "2021-01-08 16:01:58.407000"
               },
               {
                   "newsId": 2,
-                  "content": "新内容",
-                  "type": "国际",
-                  "publish_time": "2021-01-07 13:22:06"
+                  "title": "发布标题0",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:03.493000"
+              },
+              {
+                  "newsId": 3,
+                  "title": "发布标题1",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:06.227000"
+              },
+              {
+                  "newsId": 4,
+                  "title": "发布标题2",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:08.806000"
+              },
+              {
+                  "newsId": 5,
+                  "title": "发布标题3",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:11.604000"
+              },
+              {
+                  "newsId": 6,
+                  "title": "发布标题4",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:15.248000"
+              },
+              {
+                  "newsId": 7,
+                  "title": "发布标题5",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:18.156000"
+              },
+              {
+                  "newsId": 8,
+                  "title": "发布标题6",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:20.846000"
+              },
+              {
+                  "newsId": 9,
+                  "title": "发布标题7",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:23.533000"
+              },
+              {
+                  "newsId": 10,
+                  "title": "发布标题8",
+                  "type": "国内",
+                  "publish_time": "2021-01-08 16:02:25.924000"
               }
           ],
           "prePage": 0,
-          "nextPage": 0,
+          "nextPage": 2,
           "isFirstPage": true,
-          "isLastPage": true,
+          "isLastPage": false,
           "hasPreviousPage": false,
-          "hasNextPage": false,
+          "hasNextPage": true,
           "navigatePages": 8,
           "navigatepageNums": [
-              1
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
           ],
           "navigateFirstPage": 1,
-          "navigateLastPage": 1,
-          "lastPage": 1,
+          "navigateLastPage": 6,
+          "lastPage": 6,
           "firstPage": 1
       }
   }
