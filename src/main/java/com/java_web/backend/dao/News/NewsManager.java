@@ -15,7 +15,8 @@ public interface NewsManager {
                    type,
                    publish_time
             FROM news
-            INNER JOIN news_type USING(type_id)
+                     INNER JOIN news_type USING(type_id)
+            ORDER BY news_id
             """)
     ArrayList<NewsBasic> getNewsAll();
     @Select("""

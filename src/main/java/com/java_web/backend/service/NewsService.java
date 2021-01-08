@@ -9,6 +9,7 @@ import com.java_web.backend.model.dto.News.NewsDetail;
 import com.java_web.backend.model.po.News;
 import com.java_web.backend.util.MyResponse;
 import com.java_web.backend.util.TokenHelper;
+import com.sun.xml.bind.v2.runtime.output.SAXOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,9 @@ public class NewsService {
         if (optionalNews.isPresent()) {
             News news = optionalNews.get();
             Integer ownerUserId = news.getUser().getUserId();
+            System.out.println("newsId: " + newsId);
+            System.out.println("loginUserId: " + loginUserId);
+            System.out.println("ownerUserId: " + ownerUserId);
             if(loginUserId.equals(ownerUserId)) {
                 try {
                     newsManager.updateNews(title, content, typeId, newsId);
