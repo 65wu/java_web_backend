@@ -46,7 +46,7 @@ public class NewsService {
                 result
         );
     }
-    public MyResponse Edit(String token, Integer newsId, String title, String content, Integer typeId) {
+    public MyResponse edit(String token, Integer newsId, String title, String content, Integer typeId) {
         ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
         String username = valueStr.get(token);
         // 取出当前token用户的user id
@@ -81,7 +81,7 @@ public class NewsService {
                 "新闻不存在"
         );
     }
-    public MyResponse Delete(String token, Integer newsId) {
+    public MyResponse delete(String token, Integer newsId) {
         ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
         String username = valueStr.get(token);
         // 取出当前token用户的user id

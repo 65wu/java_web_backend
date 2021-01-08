@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public MyResponse Register(@RequestBody @Valid RegisterTransfer urt) {
+    public MyResponse register(@RequestBody @Valid RegisterTransfer urt) {
         return userService.Register(
                 urt.getPassword(),
                 urt.getUsername(),
@@ -28,7 +28,7 @@ public class UserController {
         );
     }
     @PostMapping("/login")
-    public MyResponse Login(@RequestBody @Valid LoginTransfer user) {
+    public MyResponse login(@RequestBody @Valid LoginTransfer user) {
         return userService.Login(
                 user.getUsername(),
                 user.getPassword()
@@ -36,7 +36,7 @@ public class UserController {
     }
     @AuthToken
     @PutMapping("/edit/password")
-    public MyResponse EditPassword(@RequestHeader("Token") String token, @RequestBody @Valid EditPasswordTransfer user) {
+    public MyResponse editPassword(@RequestHeader("Token") String token, @RequestBody @Valid EditPasswordTransfer user) {
         return userService.EditPassword(
                 token,
                 user.getPassword()
@@ -44,7 +44,7 @@ public class UserController {
     }
     @AuthToken
     @PutMapping("/edit/basic")
-    public MyResponse EditBasic(@RequestHeader("Token") String token, @RequestBody @Valid EditBasicTransfer user) {
+    public MyResponse editBasic(@RequestHeader("Token") String token, @RequestBody @Valid EditBasicTransfer user) {
         return userService.EditBasic(
                 token,
                 user.getNickname(),
@@ -53,7 +53,7 @@ public class UserController {
     }
     @AuthToken
     @GetMapping("/info")
-    public MyResponse GetUserInfo(@RequestHeader("Token") String token) {
+    public MyResponse getUserInfo(@RequestHeader("Token") String token) {
         return userService.GetUserInfo(
                 token
         );

@@ -18,14 +18,14 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
     @GetMapping("/all")
-    public MyResponse GetAll(
+    public MyResponse getAll(
             @RequestParam(defaultValue = "1") int pageNo,
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         return newsService.GetAll(pageNo, pageSize);
     }
     @GetMapping("detail")
-    public MyResponse GetDetail(
+    public MyResponse getDetail(
             @RequestParam Integer news_id
     ) {
         return newsService.GetDetail(news_id);
@@ -36,7 +36,7 @@ public class NewsController {
             @RequestHeader("Token") String token,
             @RequestBody @Valid EditNews editNews
     ) {
-        return newsService.Edit(
+        return newsService.edit(
             token,
             editNews.getNewsId(),
             editNews.getTitle(),
@@ -50,7 +50,7 @@ public class NewsController {
             @RequestHeader("Token") String token,
             @RequestBody @Valid DeleteNews deleteNews
     ) {
-        return newsService.Delete(
+        return newsService.delete(
                 token,
                 deleteNews.getNewsId()
         );
