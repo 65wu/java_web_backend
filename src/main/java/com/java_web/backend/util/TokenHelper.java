@@ -38,7 +38,7 @@ public class TokenHelper {
                 redisTemplate.expire(username, 10, TimeUnit.MINUTES);
                 redisTemplate.expire(token, 10, TimeUnit.MINUTES);
                 long newBirthTime = System.currentTimeMillis();
-                valueStr.set(token + username, Long.toString(newBirthTime));
+                valueStr.set(token + username, Long.toString(newBirthTime), 10, TimeUnit.MINUTES);
             }
             return true;
         }
