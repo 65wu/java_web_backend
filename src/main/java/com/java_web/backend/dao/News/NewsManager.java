@@ -42,11 +42,12 @@ public interface NewsManager {
     void deleteNews(
             @Param("newsId") Integer newsId
     );
-    @Insert("INSERT INTO news(content, publish_time, title, type_id, user_id)\n" +
-            "VALUES(#{content}, #{publish_time}, #{title), #{typeId}, #{userId}")
+    @Insert("""
+            INSERT INTO news(content, publish_time, title, type_id, user_id)
+            VALUES(#{content}, #{publishTime}, #{title}, #{typeId}, #{userId})""")
     void publishNews(
             @Param("content") String content,
-            @Param("publish_time") Date publishTime,
+            @Param("publishTime") Date publishTime,
             @Param("title") String title,
             @Param("typeId") Integer typeId,
             @Param("userId") Integer userId
