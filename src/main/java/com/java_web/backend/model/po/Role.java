@@ -9,10 +9,14 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer roleId;
     @NotNull
     private String name;
+
+    public Role() {
+
+    }
 
     public Integer getRoleId() {
         return roleId;
@@ -27,6 +31,11 @@ public class Role {
     }
 
     public void setName(String name) {
+        this.name = name;
+    }
+
+    public Role(Integer roleId, @NotNull String name) {
+        this.roleId = roleId;
         this.name = name;
     }
 }
