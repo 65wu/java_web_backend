@@ -50,4 +50,10 @@ public class TokenHelper {
         String username = valueStr.get(token);
         return userManager.findIdByUsername(username);
     }
+    // 用userId生成邮箱验证码
+    public void generateVerificationCode(Integer userId) {
+        int code = (int)(Math.random() * (1000000));
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        valueStr.set(userId + "", code + "", 5, TimeUnit.MINUTES);
+    }
 }
