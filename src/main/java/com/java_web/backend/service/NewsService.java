@@ -14,10 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class NewsService {
@@ -118,5 +115,30 @@ public class NewsService {
                 0,
                 "新闻不存在"
         );
+    }
+    public MyResponse publish(String token, String content, String title, Integer typeId) {
+        ValueOperations<String, String> valueStr = redisTemplate.opsForValue();
+        String username = valueStr.get(token);
+        Integer userId = userManager.findIdByUsername(username);
+        Date date = new Date();
+        try {
+            newsManager.publishNews(
+                    content,
+                    date,
+                    title,
+                    typeId,
+                    userId
+            );
+            return new MyResponse(
+                    1,
+                    "发布成功"
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new MyResponse(
+                    0,
+                    "发布失败"
+            );
+        }
     }
 }

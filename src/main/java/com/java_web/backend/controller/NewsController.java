@@ -2,6 +2,7 @@ package com.java_web.backend.controller;
 
 import com.java_web.backend.model.dto.News.DeleteNews;
 import com.java_web.backend.model.dto.News.EditNews;
+import com.java_web.backend.model.dto.News.PublishNews;
 import com.java_web.backend.service.NewsService;
 import com.java_web.backend.util.AuthToken;
 import com.java_web.backend.util.MyResponse;
@@ -52,6 +53,19 @@ public class NewsController {
         return newsService.Delete(
                 token,
                 deleteNews.getNewsId()
+        );
+    }
+    @AuthToken
+    @PostMapping("/publish")
+    public MyResponse Publish(
+            @RequestHeader("Token") String token,
+            @RequestBody @Valid PublishNews publishNews
+    ) {
+        return newsService.publish(
+                token,
+                publishNews.getContent(),
+                publishNews.getTitle(),
+                publishNews.getTypeId()
         );
     }
 }

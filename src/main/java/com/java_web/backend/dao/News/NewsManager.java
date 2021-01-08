@@ -5,6 +5,7 @@ import com.java_web.backend.model.dto.News.NewsDetail;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Mapper
 public interface NewsManager {
@@ -40,5 +41,14 @@ public interface NewsManager {
     @Delete("DELETE FROM news WHERE news_id=#{newsId}")
     void deleteNews(
             @Param("newsId") Integer newsId
+    );
+    @Insert("INSERT INTO news(content, publish_time, title, type_id, user_id)\n" +
+            "VALUES(#{content}, #{publish_time}, #{title), #{typeId}, #{userId}")
+    void publishNews(
+            @Param("content") String content,
+            @Param("publish_time") Date publishTime,
+            @Param("title") String title,
+            @Param("typeId") Integer typeId,
+            @Param("userId") Integer userId
     );
 }
