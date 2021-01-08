@@ -275,10 +275,11 @@
 
 + Response Body Params
 
-  | Key      | Description    |
-  | -------- | -------------- |
-  | user_id  | 新闻作者的主键 |
-  | nickname | 新闻作者的昵称 |
+  | Key      | Description                              |
+  | -------- | ---------------------------------------- |
+  | user_id  | 新闻作者的主键                           |
+  | nickname | 新闻作者的昵称                           |
+  | own      | 布尔值，true代表查询的新闻作者是登录用户 |
 
 + Response Body Example
 
@@ -288,13 +289,14 @@
       "message": "获取成功",
       "data": {
           "news_detail": {
-              "title": "修改标题0",
-              "content": "修改内容0",
-              "publish_time": "2021-01-07 13:03:21",
+              "title": "发布标题",
+              "content": "发布内容",
+              "publish_time": "2021-01-08 16:01:58.407000",
               "type": "国内",
               "user_id": 4,
               "nickname": "hhh"
-          }
+          },
+          "own": true
       }
   }
   ```
@@ -358,5 +360,30 @@
   }
   ```
 
-  
+
+---
+
+#### 删除新闻
+
++ Url: /news/delete
+
++ Method
+
++ Request Body Example
+
+  ```json
+  {
+      "newsId":24
+  }
+  ```
+
++ Response Body Example
+
+  ```json
+  {
+      "code": 1,
+      "message": "新闻删除成功",
+      "data": null
+  }
+  ```
 
