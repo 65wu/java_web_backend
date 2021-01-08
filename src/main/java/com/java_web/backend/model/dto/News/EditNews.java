@@ -1,7 +1,6 @@
 package com.java_web.backend.model.dto.News;
 
 import javax.validation.constraints.NotNull;
-import java.lang.annotation.Native;
 
 public class EditNews {
     @NotNull

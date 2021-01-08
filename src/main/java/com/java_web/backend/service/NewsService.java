@@ -68,9 +68,6 @@ public class NewsService {
         if (optionalNews.isPresent()) {
             News news = optionalNews.get();
             Integer ownerUserId = news.getUser().getUserId();
-            System.out.println("newsId: " + newsId);
-            System.out.println("loginUserId: " + loginUserId);
-            System.out.println("ownerUserId: " + ownerUserId);
             if(loginUserId.equals(ownerUserId)) {
                 try {
                     newsManager.updateNews(title, content, typeId, newsId);
